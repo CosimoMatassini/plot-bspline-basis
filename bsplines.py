@@ -16,26 +16,18 @@ def plot_bspline_basis(knots, degree):
     x_plot = np.linspace(knots[0], knots[-1], 500)
 
     for i in range(n_basis):
-        # The i-th basis function N_{i,k} is defined by the knots
-        # t[i], ..., t[i+k+1]
         knots_i = knots[i : i + degree + 2]
-
-        # Create the B-spline object for *only* the i-th basis function
-        # This function is non-zero only on [knots[i], knots[i+k+1]]
         spl = BSpline.basis_element(knots_i, extrapolate=False)
 
-        # Evaluate the basis function over the full x_plot range
-        # spl(x_plot) will be NaN outside its support
         y_plot = spl(x_plot)
-
-        # Plot, replacing NaNs (outside the support) with 0
+        
         plt.plot(
             x_plot, np.nan_to_num(y_plot), label=f"$N_{{{i},{degree + 1}}}(x)$", lw=2.5
         )
 
     plt.title(f"B-Spline Basis Functions (Degree {degree})", fontsize=16)
 
-    # Add vertical lines for unique knots to show their influence
+    #Vertical lines for unique knots to show their influence
     unique_knots = np.unique(knots)
 
     plt.plot(knots[degree], 0, "ro", markersize=8)
